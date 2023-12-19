@@ -8,3 +8,5 @@ This will be an online shop where customers can singn up, log in, browse music c
 <h3>2. I started by creating log in system. I wrote login_required decorator, three routes that uses session object to check if user has been logged in. Also session expires in 3600 seconds.</h3>
 
 <h3>3. public and templates foders were created to store media(photos, css, js etc) and template html files</h3>
+
+<h3>4. Added login and register forms. Took free stock image from unsplash, imported tailwind styles, optimized backgorund image size</h3>

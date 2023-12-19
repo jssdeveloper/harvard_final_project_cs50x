@@ -11,6 +11,7 @@ cursor.connection.commit()
 
 data = {}
 
+# Input file removed from repo
 with open("input.csv", "r") as file:
     reader = csv.DictReader(file)
     for row in reader:

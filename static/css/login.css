@@ -1,0 +1,41 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.background-image {
+    /* Full viewport height */
+    height: 100vh;
+    /* Set the background image and adjust its properties */
+    background-image: url('/static/img/login_cover.jpg');
+    background-size: cover;
+    background-position: center;
+    /* Make the background image take the whole screen */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Send it to the back */
+}
+
+.login-container {
+    /* Center the login form */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the form */
+    border-radius: 8px;
+    text-align: center;
+}
+
+.login-container form input {
+    width: 80%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
