@@ -12,3 +12,5 @@ This will be an online shop where customers can singn up, log in, browse music c
 <h3>3. public and templates foders were created to store media(photos, css, js etc) and template html files</h3>
 
 <h3>4. Added login and register forms. Took free stock image from unsplash, imported tailwind styles, optimized backgorund image size</h3>
+
+<h3>5. Added tables to database to store user login information and orders, also order item</h3>

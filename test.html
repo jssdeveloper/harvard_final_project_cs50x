@@ -1,0 +1,12 @@
+<clients>
+    <!--
+     Test parameter passing to process 
+     - To list clients:$ xadmin pc
+     - To stop client: $ xadmin sc -t TAG1 -s SUBSECTION1
+     - To boot client: $ xadmin bc -t TAG1 -s SUBSECTION1
+    -->
+    <client cmdline="restincl">
+        <exec tag="RESTIN" autostart="Y" log="${NDRX_ULOG}/restincl.log" />
+    </client>
+
+</clients>

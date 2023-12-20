@@ -25,26 +25,35 @@
             </span>
         </div>
         <h2 class="text-2xl font-semibold text-center mb-4">Create a new account</h2>
-        <p class="text-gray-600 text-center mb-6">Enter your details to register.</p>
-        <form>
+        <form action="/register" method="post">
+            {% if error %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Error</strong>
+                <span class="block sm:inline">{{ error }}</span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                  <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                </span>
+              </div>
+            {% endif %}
             <div class="mb-4">
-                <label for="fullName" class="block text-gray-700 text-sm font-semibold mb-2">Full Name *</label>
-                <input type="text" id="fullName" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="John Smith">
-            </div>
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
-                <input type="email" id="email" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="hello@gmail.com">
+                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                <input type="email" id="email" name="email" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="hello@gmail.com">
             </div>
             <div class="mb-6">
                 <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
-                <input type="password" id="password" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="••••••••">
-                <p class="text-gray-600 text-xs mt-1">Must contain 1 uppercase letter, 1 number, min. 8 characters.</p>
+                <input type="password" id="password" name="password" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="••••••••">
+                <p class="text-gray-600 text-xs mt-1">Must contain min. 8 characters.</p>
+            </div>
+
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password Confirm</label>
+                <input type="password" id="password_confirm" name="password_confirm" class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500" required placeholder="••••••••">
             </div>
             <button type="submit" class="w-full bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Register</button>
             <button type="button" onclick="back()" class="mt-2 w-full bg-white-200 border px-4 py-2 rounded-lg hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out">Back</button>
 
             <p class="text-gray-600 text-xs text-center mt-4">
-                By clicking Register, you agree to accept Apex Financial's
+                By clicking Register, you agree to accept SoundNet Financial's
                 <a href="#" class="text-gray-900 hover:underline">Terms and Conditions</a>.
             </p>
         </form>
