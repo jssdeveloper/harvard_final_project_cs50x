@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 import sqlite3
+import random
 
 # DB connection
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def login_required(f):
 @app.route("/")
 @login_required
 def index():
-    return render_template("base.html")
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -75,7 +76,25 @@ def register():
 
 @app.route("/logout")
 def logout():
-    return "logout"
+    session.pop("user_name")
+    session.pop("user_id")
+    return redirect("/")
+
+@app.route("/search", methods=["POST"])
+@login_required
+def search():
+    db = sqlite3.connect("songs.db").cursor()
+    search = request.form.get("search")
+
+    query = "SELECT * FROM songs WHERE artist LIKE ? OR album LIKE ? LIMIT 15"
+    db.execute(query,('%' + search + '%','%' + search + '%',))
+    search_results = db.fetchall()
+    db.close()
+
+    if search == "":
+        search_results = []
+
+    return render_template("search.html",search_results=search_results)
 
 if __name__ == "__main__":
     app.run(debug=True)
