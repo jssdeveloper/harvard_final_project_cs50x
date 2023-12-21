@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% block main %}
 
 <div class="flex items-center justify-center py-2">
-  <input
-    class="border border-[#29303Eff] rounded-full px-4"
+  <input id="active_search"
+    class="border border-[#29303Eff] border-2 rounded-full px-10 py-2"
     name="search"
     type="search"
     placeholder="search music"
@@ -12,7 +12,7 @@
   />
 </div>
 
-<div id="search_results" class="bg-gray-200 px-6"></div>
+<div id="search_results" class="bg-gray-200 px-6 backdrop-blur-xl bg-white/30"></div>
 
 
 Catalogue {% endblock %}
