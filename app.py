@@ -20,7 +20,12 @@ def login_required(f):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    db = sqlite3.connect("songs.db").cursor()
+    db.execute("SELECT * FROM songs ORDER BY RANDOM() LIMIT 18")
+    songs = db.fetchall()
+    db.close()
+    print(songs)
+    return render_template("index.html", songs=songs)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -95,6 +100,16 @@ def search():
         search_results = []
 
     return render_template("search.html",search_results=search_results)
+
+@app.route("/catalogue")
+@login_required
+def catalogue():
+    db = sqlite3.connect("songs.db").cursor()
+    db.execute("SELECT * FROM songs ORDER BY RANDOM() LIMIT 18")
+    songs = db.fetchall()
+    db.close()
+    print(songs)
+    return render_template("catalogue.html", songs=songs)
 
 if __name__ == "__main__":
     app.run(debug=True)
