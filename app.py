@@ -24,7 +24,6 @@ def index():
     db.execute("SELECT * FROM songs ORDER BY RANDOM() LIMIT 18")
     songs = db.fetchall()
     db.close()
-    print(songs)
     return render_template("index.html", songs=songs)
 
 @app.route("/login", methods=["GET", "POST"])
@@ -108,8 +107,70 @@ def catalogue():
     db.execute("SELECT * FROM songs ORDER BY RANDOM() LIMIT 18")
     songs = db.fetchall()
     db.close()
-    print(songs)
     return render_template("catalogue.html", songs=songs)
+
+@app.route("/item")
+@login_required
+def item():
+    db = sqlite3.connect("songs.db").cursor()
+    album_id = request.args.get("q",'')
+    db.execute("SELECT * FROM songs WHERE id = ?",(album_id,))
+    data = db.fetchall()
+    print(data[0][0])
+    db.close()
+    return render_template("item.html",data=data)
+
+@app.route("/close")
+@login_required
+def close():
+    return ""
+
+@app.route("/manage_basket")
+def manage_basket():
+
+    action = request.args.get("action")
+    item_id = request.args.get("id")
+
+    if 'basket' not in session:
+        session['basket'] = {}
+
+    basket_list = session['basket']
+
+    try:
+        basket_list[item_id] += 1
+    except:
+        basket_list[item_id] = 1
+
+    session['basket'] = basket_list
+    print(session)
+
+    # Check if user has active basket
+    # db = sqlite3.connect("songs.db")
+    # cursor = db.cursor()
+    # user_id = int(session['user_id'])
+    # cursor.execute("SELECT * FROM orders")
+    # query = cursor.fetchall()
+    # print(query)
+
+    # cursor.execute("SELECT order_id FROM orders WHERE status = 'new' AND user_id = ?",(user_id,))
+    # query = cursor.fetchall()
+    # print(query)
+
+    # if query:
+    #     order_id = query[0][0]
+    # else:
+    #     cursor.execute("INSERT INTO orders(user_id,status) VALUES (?,'new')",(user_id,))
+    #     db.commit()
+    #     cursor.execute("SELECT order_id FROM orders WHERE status = 'new' AND user_id = ?",(user_id,))
+    #     query = cursor.fetchall()
+    #     print(query)
+    #     order_id = query[0][0]
+    # print(order_id)
+    # db.close()
+
+    return ""
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

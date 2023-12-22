@@ -1,41 +1,70 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body,
+html {
+    font-family: 'Barlow', sans-serif;
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
+.nav_link {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+}
 .background-image {
-    /* Full viewport height */
-    height: 100vh;
-    /* Set the background image and adjust its properties */
-    background-image: url('/static/img/login_cover.jpg');
-    background-size: cover;
-    background-position: center;
-    /* Make the background image take the whole screen */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1; /* Send it to the back */
+  /* Full viewport height */
+  height: 100vh;
+  /* Set the background image and adjust its properties */
+  background-image: url("/static/img/login_cover.jpg");
+  background-size: cover;
+  background-position: center;
+  /* Make the background image take the whole screen */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1; /* Send it to the back */
 }
 
 .login-container {
-    /* Center the login form */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the form */
-    border-radius: 8px;
-    text-align: center;
+  /* Center the login form */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Semi-transparent background for the form */
+  border-radius: 8px;
+  text-align: center;
 }
 
 .login-container form input {
-    width: 80%;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+  width: 80%;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#my-modal-backdrop {
+  /* display: none; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px); /* Apply the backdrop blur effect */
+  -webkit-backdrop-filter: blur(4px); /* For Safari */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
 }

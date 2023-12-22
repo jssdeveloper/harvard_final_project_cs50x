@@ -1,0 +1,31 @@
+<div class="flex flex-col">
+  <div></div>
+  <div id="my-modal-content">
+    <div class="p-2 rounded">
+      <div class="flex flex-col items-center">
+        <div class="bg-white p-6 m-2 rounded shadow-2xl">
+          <img class="max-w-sm rounded" src="{{data.0.4}}" alt="{{data.0.1}}" />
+          <div class="justify-start mt-2">Artist: <span class="font-bold">{{data.0.1}}</span></div>
+          <div>Album: <span class="font-bold">{{data.0.2}}</span></div>
+          <div>Release <span class="font-bold">date: {{data.0.3}}</span></div>
+          <div>Price: <span class="font-bold">{{data.0.8}}</span></div>
+
+          <div class="flex justify-center items-center gap-4 mt-4">
+            <div> <button class="border border-[#29303Eff] border-2 rounded-full px-6 py-1 hover:scale-110 transition duration-200 hover:bg-green-400 hover:border-green-400"
+                hx-get="/manage_basket?action=add&id={{data.0.0}}"
+                hx-target="#item-placeholder"
+                hx-trigger="click"
+              >
+                Add to cart
+              </button></div>
+            <div><button class="border border-[#29303Eff] border-2 rounded-full px-6 py-1 hover:scale-110 transition duration-200 hover:bg-red-400 hover:border-red-400"
+                hx-get="/close"
+                hx-target="#item-placeholder"
+                hx-trigger="click"
+              >
+                Close
+              </button></div>
+          </div>
+        </div>
+    </div>
+
