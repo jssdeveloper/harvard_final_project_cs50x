@@ -1,11 +1,24 @@
 # harvard_final_project_cs50x
 A cd online store
 
+<h3>Login page<h3>
 <img src="/readme_images/login.jpeg">
+<hr>
+<h3>Gallery page<h3>
+<img src="/readme_images/gallery.jpeg">
+<hr>
+<h3>Dynamic search page (htmx)<h3>
+<img src="/readme_images/dynamic_search.jpeg">
+<hr>
+<h3>Cart page<h3>
+<img src="/readme_images/cart.jpeg">
+<hr>
+<h3>Profile page (history & password change)<h3>
+<img src="/readme_images/profile.jpeg">
 
 This will be an online shop where customers can singn up, log in, browse music cds by artist, album name, see album artwork, order items
 
-<h3>1. I started by donwloading dataset as csv from kaggle, then cleaned it up and saved to sqlite database using script gen_albums.py. Then I indexed album, artist columns to improve search performance later in app usage</h3>
+<h3>1. I started by donwloading dataset as csv from kaggle, then cleaned it up and saved to sqlite database using script gen_albums.py. Db in use - sqlite. Then I indexed album, artist columns to improve search performance later in app usage</h3>
 
 <h3>2. I started by creating log in system. I wrote login_required decorator, three routes that uses session object to check if user has been logged in. Also session expires in 3600 seconds.</h3>
 
@@ -15,13 +28,11 @@ This will be an online shop where customers can singn up, log in, browse music c
 
 <h3>5. Added tables to database to store user login information and orders, also order item</h3>
 
-<h3>Color Palette:</h3>
-<p>
-/* CSS HEX */
---ash-gray: #C7D0C4ff;
---gunmetal: #29303Eff;
---cadet-gray: #9AACBAff;
---gray: #6F7A7Dff;
---charcoal: #2D3748ff;
-https://coolors.co/c7d0c4-29303e-9aacba-6f7a7d-2d3748
-<p>
+<h3>6. Added htmx to create dynamic search and some other dynamic content without needing to hard reload the page</h3>
+
+<h3>7. Added Gallery of random chosen albums to be displayed in gallery, added mobile friendly layout, added product cards with javascript auto close functionality<h3>
+
+<h3>8. Added product cart item, cart is being stored in session object, if user orders basket items a new record is written to database.<h3>
+
+<h3>9. Added profile page where user can change his passwod and see order history<h3>
+
