@@ -5,18 +5,23 @@ This is an online shop where customers can sign up, log in, browse music CDs by 
 <p>Flask, Sqlite, Tailwind, Htmx</p>
 
 <h3>Login page<h3>
+<p>Uses forms, tailwind, sends request to database and verifies if the requested username and password is correct. If that is true the user is saved in session and redirected to index page</p>
 <img src="/readme_images/login.jpeg">
 <hr>
 <h3>Gallery page<h3>
+<p>Fetches random records from database and displays as cards. If user hovers on card it grows. Used tailwind for styling. When user clicks on the item a htmx get request is sent to endpoint to display requested item</p>
 <img src="/readme_images/gallery.jpeg">
 <hr>
 <h3>Dynamic search page (htmx)<h3>
+<p>Htmx fetches search results from endpoint on each change in form. If user clicks on form and there is active display card, it deletes the card to make place for search results.</p>
 <img src="/readme_images/dynamic_search.jpeg">
 <hr>
 <h3>Cart page<h3>
+<p>Cart items are stored in session object. If user places the order, data is stored in database with customer id, order id, item ids in the order</p>
 <img src="/readme_images/cart.jpeg">
 <hr>
 <h3>Profile page (history & password change)<h3>
+<p>User can change the password and view previous orders. Password change is being valdidated and verified. If there is no password / wrong password or new password does not match - error message is being displayed</p>
 <img src="/readme_images/profile.jpeg">
 
 <h3>1. I started by downloading a dataset as a CSV from Kaggle, then cleaned it up and saved it to a SQLite database using the script gen_albums.py. The database in use is SQLite. Then I indexed the album and artist columns to improve search performance later in app usage.</h3>
