@@ -1,13 +1,14 @@
-<div class="flex flex-col gap-2">
-{% for search in search_results %}
-<div class="flex rounded hover:scale-[102%] transition duration-200 shadow-xl hover:shadow-2xl cursor-pointer py-1" hx-get="/item?q={{search[0]}}" hx-target="#item-placeholder">
-    <div>
-        <img src="{{search[4]}}" alt="Cover image {{search_results[1]}}" class="h-[3rem] rounded">
+<div id="search_results" class="flex flex-col gap-2 mt-4">
+    {% for search in search_results %}
+    <div class="flex rounded hover:scale-[102%] transition duration-200 shadow-xl hover:shadow-2xl cursor-pointer py-1"
+        hx-get="/item?q={{search[0]}}" hx-target="#item-placeholder" onclick="delete_search_results()">
+        <div>
+            <img src="{{search[4]}}" alt="Cover image {{search_results[1]}}" class="h-[3rem] rounded">
+        </div>
+        <div class="pl-3">
+            <p class="text-[#29303Eff] font-bold">{{search[1]}}</p>
+            {{search[2]}}
+        </div>
     </div>
-    <div class="pl-3">
-        <p class="text-[#29303Eff] font-bold">{{search[1]}}</p>
-        {{search[2]}}
-    </div>
-</div>
-{% endfor %}
+    {% endfor %}
 </div>

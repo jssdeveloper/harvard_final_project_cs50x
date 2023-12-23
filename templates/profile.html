@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% block main %}
+<h1 class="mt-2 px-6">{{username}}</h1>
+
+<h1 class="text-lg font-bold px-6 pb-1">Change Password</h1>
+<div class="px-6 font-bold" id="chg_psw"></div>
+<form class="grid gap-2 px-6 grid-cols-1 sm:grid-cols-2 mb-6" method="post" hx-post="/change_password"
+    hx-target="#chg_psw">
+    <div>
+        <input type="password" name="current_password" placeholder="Enter current password"
+            class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500">
+    </div>
+    <div>
+        <input type="password" name="new_password" placeholder="Enter new password"
+            class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500">
+    </div>
+    <div>
+        <input type="password" name="repeat_password" placeholder="Repeat new password"
+            class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500">
+    </div>
+    <div>
+        <button type="submit"
+            class="w-full bg-gray-900 border border-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 ease-in-out">Change
+            Password</button>
+    </div>
+</form>
+
+<h1 class="text-lg font-bold px-6 pb-1">Order History</h1>
+<div id="cart_items" class="flex flex-col gap-2 px-6 mb-4">
+    {% for b in data %}
+    <div class="bg-white flex justify-between rounded shadow-lg hover:scale-[103%] transition duration-200">
+        <div class="flex items-center">
+            <div>
+                <img src="{{b.image}}" alt="Cover image {{b.title}}" class="w-[5rem] rounded">
+            </div>
+            <div class="ml-2">
+                <span class="font-bold text-lg">{{b.artist}}</span> <br>
+                {{b.title}} <br>
+            </div>
+        </div>
+        <div class="flex items-center gap-6 mr-4">
+            <div class="text-center"><span class="text-lg">&#8364;{{b.price}}</span><br> <span
+                    class="font-bold">{{b.qty}}</span></div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

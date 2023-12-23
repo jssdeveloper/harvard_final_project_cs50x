@@ -116,7 +116,6 @@ def item():
     album_id = request.args.get("q",'')
     db.execute("SELECT * FROM songs WHERE id = ?",(album_id,))
     data = db.fetchall()
-    print(data[0][0])
     db.close()
     return render_template("item.html",data=data)
 
@@ -125,52 +124,161 @@ def item():
 def close():
     return ""
 
+@app.route("/basket")
+@login_required
+def basket():
+    
+    if len(session['basket']) <1 or 'basket' not in session:
+        message = "Cart Empty"
+        return render_template("basket.html",message=message)
+
+    try:
+        db = sqlite3.connect("songs.db").cursor()
+        basket_list = session['basket']
+        basket_items = []
+        for item in basket_list:
+            db.execute("SELECT * FROM songs WHERE id = ?",(item,))
+            basket_items.append({"album":db.fetchall()[0], "quantity":basket_list[item]})
+        db.close()
+        basket_total = 0
+        for item in basket_items:
+            basket_total += float(item['album'][8]) * int(item['quantity'])
+        return render_template("basket.html",basket_items=basket_items, basket_total=basket_total)
+    except:
+        message = "Cart Empty"
+        return render_template("basket.html",message=message)
+
 @app.route("/manage_basket")
 def manage_basket():
 
     action = request.args.get("action")
     item_id = request.args.get("id")
 
-    if 'basket' not in session:
+    if action == "add":
+
+        if 'basket' not in session:
+            session['basket'] = {}
+
+        basket_list = session['basket']
+
+        try:
+            basket_list[item_id] += 1
+        except:
+            basket_list[item_id] = 1
+
+        session['basket'] = basket_list
+
+        return ''
+    
+    elif action == "remove":
+        basket_list = session['basket']
+        del basket_list[item_id]
+        session['basket'] = basket_list
+
+        return redirect(url_for('basket'))
+
+@app.route("/checkout", methods=["POST"])
+@login_required
+def checkout():
+    if request.method == "POST":
+        basket_list = session['basket']
+
+         # Check if user has active basket
+        db = sqlite3.connect("songs.db")
+        cursor = db.cursor()
+        user_id = (session['user_id'])
+        cursor.execute("SELECT order_id FROM orders WHERE status = 'new' AND user_id = ?",(user_id,))
+        query = cursor.fetchall()
+        
+        if query:
+            order_id = query[0][0]
+        else:
+            cursor.execute("INSERT INTO orders(user_id,status) VALUES (?,'new')",(user_id,))
+            db.commit()
+            cursor.execute("SELECT order_id FROM orders WHERE status = 'new' AND user_id = ?",(user_id,))
+            query = cursor.fetchall()
+            order_id = query[0][0]
+
+        total = 0 
+        for item in basket_list:
+            cursor.execute("SELECT price FROM songs WHERE id = ?",(item,))
+            price = cursor.fetchall()[0][0]
+            total += price * basket_list[item]
+  
+        cursor.execute("UPDATE orders SET status = 'done', total = ? WHERE order_id = ?",(total,order_id,))
+        db.commit()
+
+        for item in basket_list:
+            cursor.execute("SELECT price FROM songs WHERE id = ?",(item,))
+            price = cursor.fetchall()[0][0]
+            cursor.execute("INSERT INTO order_item(order_id, record_id, quantity, price) VALUES (?,?,?,?)",(order_id,item,session["basket"][item],price,))
+            db.commit()
+
+        db.close()
+
         session['basket'] = {}
 
-    basket_list = session['basket']
+        return """<p class="text-xl mt-2 font-bold text-center">Checkout completed!</p>"""
 
-    try:
-        basket_list[item_id] += 1
-    except:
-        basket_list[item_id] = 1
+@app.route("/profile")
+@login_required
+def profile():
+    db = sqlite3.connect("songs.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM orders JOIN order_item ON order_item.order_id = orders.order_id WHERE user_id = ? ",(session['user_id'],))
+    orders = cursor.fetchall()
 
-    session['basket'] = basket_list
-    print(session)
+    data = []
 
-    # Check if user has active basket
-    # db = sqlite3.connect("songs.db")
-    # cursor = db.cursor()
-    # user_id = int(session['user_id'])
-    # cursor.execute("SELECT * FROM orders")
-    # query = cursor.fetchall()
-    # print(query)
+    for order in orders:
+        songs_id = order[6]
+        cursor.execute("SELECT * FROM songs WHERE id = ?",(songs_id,))
+        query = cursor.fetchall()
+        artist = query[0][1]
+        album = query[0][2]
+        image = query[0][4]
+        price = order[8]
+        qty = order[7]
 
-    # cursor.execute("SELECT order_id FROM orders WHERE status = 'new' AND user_id = ?",(user_id,))
-    # query = cursor.fetchall()
-    # print(query)
+        data.append({"artist":artist,"album":album,"image":image,"price":price,"qty":qty})
+    
+    db.close()
+    return render_template("profile.html",data=data, username=session['user_name'])
 
-    # if query:
-    #     order_id = query[0][0]
-    # else:
-    #     cursor.execute("INSERT INTO orders(user_id,status) VALUES (?,'new')",(user_id,))
-    #     db.commit()
-    #     cursor.execute("SELECT order_id FROM orders WHERE status = 'new' AND user_id = ?",(user_id,))
-    #     query = cursor.fetchall()
-    #     print(query)
-    #     order_id = query[0][0]
-    # print(order_id)
-    # db.close()
+@app.route("/change_password", methods=["POST"])
+@login_required
+def change_password():
+    if request.method == "POST":
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        repeat_password = request.form.get("repeat_password")
 
-    return ""
+        if not current_password:
+            return "Please enter your current password"
 
+        db = sqlite3.connect("songs.db")
+        cursor = db.cursor()
+        cursor.execute("SELECT hash FROM users WHERE id = ?",(session['user_id'],))
+        query = cursor.fetchall()
+        db.close()
 
+        if not check_password_hash(query[0][0], current_password): 
+            return "Incorrect password"
+        else:
+            if new_password != repeat_password:
+                return "Passwords do not match"
+            else:
+                db = sqlite3.connect("songs.db")
+                cursor = db.cursor()
+                cursor.execute("UPDATE users SET hash = ? WHERE id = ?",(generate_password_hash(new_password,method='pbkdf2', salt_length=16),session['user_id'],))
+                db.commit()
+                db.close()
+                return "Password changed successfully"
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+

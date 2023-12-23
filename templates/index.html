@@ -1,37 +1,31 @@
 {% extends 'base.html' %} {% block main %}
 
+<script>
+  delete_item_placeholder = () => {
+    document.getElementById("item-placeholder").innerHTML = "";
+  };
 
+  delete_search_results = () => {
+    setTimeout(() => {
+      document.getElementById("search_results").innerHTML = "";
+    }, 100);
+  };
+</script>
 
 <div class="flex items-center justify-center pt-4">
-  <input
-    id="active_search"
-    class="border border-[#29303Eff] border-2 rounded-full px-10 py-3"
-    name="search"
-    type="search"
-    placeholder="search music"
-    hx-target="#search_results"
-    hx-post="/search"
-    hx-trigger="input changed"
-  />
+  <input id="active_search" class="border border-[#29303Eff] border-2 rounded-full px-10 py-3" name="search"
+    type="search" placeholder="search music" hx-target="#search_results" hx-post="/search" hx-trigger="input changed"
+    onfocus="delete_item_placeholder()" />
 </div>
-
 
 <div id="item-placeholder"></div>
 <div id="search_results" class="px-6 backdrop-blur-xl bg-white/30"></div>
 
-
-
-
-<div
-  class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 px-6 pb-4 pt-4"
->
+<div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 px-6 pb-4 pt-4">
   {% for song in songs %}
   <div class="min-h-[50px]" hx-get="/item?q={{song[0]}}" hx-target="#item-placeholder">
-    <img
-      class="rounded hover:scale-110 transition duration-200 shadow-xl hover:shadow-2xl cursor-pointer"
-      src="{{song[4]}}"
-      alt=""
-    />
+    <img class="rounded hover:scale-110 transition duration-200 shadow-xl hover:shadow-2xl cursor-pointer"
+      src="{{song[4]}}" alt="" />
   </div>
   {% endfor %}
 </div>
