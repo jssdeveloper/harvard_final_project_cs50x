@@ -73,8 +73,13 @@ def register():
         else:
             db.execute("INSERT INTO users (user, hash) VALUES (?, ?)", (username, generate_password_hash(password,method='pbkdf2', salt_length=16)))
             db.connection.commit()
+            
+
+            session['user_id'] = db.execute("SELECT * FROM users WHERE user = ?", (username,)).fetchone()[0]
+            session['user_name'] = username
+
             db.close()
-            return "posting"
+            return redirect("/")
     else:
         return render_template("register.html")
 
@@ -128,9 +133,9 @@ def close():
 @login_required
 def basket():
     
-    if len(session['basket']) <1 or 'basket' not in session:
-        message = "Cart Empty"
-        return render_template("basket.html",message=message)
+    # if len(session['basket']) <1 or 'basket' not in session:
+    #     message = "Cart Empty"
+    #     return render_template("basket.html",message=message)
 
     try:
         db = sqlite3.connect("songs.db").cursor()
